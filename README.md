@@ -31,8 +31,8 @@ python3 etl.py
 
 ### Data
 Dataset for this project is publicly available on AWS S3: 
-Song Data: [s3://udacity-dend/song_data](s3://udacity-dend/song_data)
-Log Data: [s3://udacity-dend/log_data](s3://udacity-dend/log_data)
+- Song Data: s3://udacity-dend/song_data
+- Log Data: s3://udacity-dend/log_data
 
 1. **Song Dataset**: Dataset is a subset of real data from the [Million Song Dataset](https://labrosa.ee.columbia.edu/millionsong/). Each file is in JSON format and contains metadata about a song and the artist of that song. The files are partitioned by the first three letters of each song's track ID.
    - `File Count: 385253` / `Total Size: 103 MB`
