@@ -1,21 +1,17 @@
 import os
 import datetime
 import configparser
-from datetime import datetime
 from pyspark.sql import SparkSession
 from pyspark.sql.types import IntegerType
 from pyspark.sql.functions import udf, col, to_timestamp, to_date, monotonically_increasing_id
 from pyspark.sql.functions import year, month, dayofmonth, hour, weekofyear, date_format
-
+#from datetime import datetime
 
 config = configparser.ConfigParser()
 config.read('dl.cfg')
 
 os.environ['AWS_ACCESS_KEY_ID']=config['AWS']['AWS_ACCESS_KEY_ID']
 os.environ['AWS_SECRET_ACCESS_KEY']=config['AWS']['AWS_SECRET_ACCESS_KEY']
-
-#sc._jsc.hadoopConfiguration().set("fs.s3a.access.key", config['AWS']['AWS_ACCESS_KEY_ID'])
-#sc._jsc.hadoopConfiguration().set("fs.s3a.secret.key", config['AWS']['AWS_SECRET_ACCESS_KEY'])
 
 
 def create_spark_session():
@@ -131,13 +127,16 @@ def process_log_data(spark, input_data, output_data):
 
 def main():
     spark = create_spark_session()
-    input_data = "s3a://udacity-dend/"
-    #input_data = "data/"
     
-    output_data = "s3a://sparkify-dl/output/"
+    # local file system
+    #input_data = "data/"
     #output_data = "etl/output/"
     
-    #process_song_data(spark, input_data, output_data)    
+    # S3
+    input_data = "s3a://udacity-dend/"
+    output_data = "s3a://sparkify-dl/output/"
+        
+    process_song_data(spark, input_data, output_data)    
     process_log_data(spark, input_data, output_data)
 
     
