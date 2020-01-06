@@ -16,6 +16,7 @@ os.environ['AWS_SECRET_ACCESS_KEY']=config['AWS']['AWS_SECRET_ACCESS_KEY']
 
 
 def create_spark_session():
+    '''Function to create a spark session'''
     spark = SparkSession \
         .builder \
         .config("spark.jars.packages", "org.apache.hadoop:hadoop-aws:2.7.0") \
@@ -24,6 +25,7 @@ def create_spark_session():
 
 
 def process_song_data(spark, input_data, output_data):
+    '''Function to process song data and generate parquet files for each dimension'''
     # get filepath to song data file
     data_song = input_data + "song_data/*/*/*/*.json"
     
@@ -43,12 +45,12 @@ def process_song_data(spark, input_data, output_data):
     
     # write artists table to parquet files
     artists_table.write.parquet(output_data + "artists.parquet")
-    artists_table.write.parquet("s3a://sparkify-dl/output/" + "artists.parquet")
 
 
 def process_log_data(spark, input_data, output_data):
+    '''Function to process log data and generate parquet files for the fact and dimensions'''
     # get filepath to log data file
-    data_log = input_data + "log_data/*.json"
+    data_log = input_data + "log-data/*/*/*.json"
 
     # read log data file
     df_log = spark.read.json(data_log)
@@ -127,7 +129,12 @@ def main():
     spark = create_spark_session()
     #input_data = "s3a://udacity-dend/"
     input_data = "data/"
-    output_data = "etl/output/"
+    
+    output_data = "s3a://sparkify-dl/output/"
+    #output_data = "etl/output/"
+
+    process_song_data(spark, input_data, output_data)    
+    process_log_data(spark, input_data, output_data)
 
     
 if __name__ == "__main__":
