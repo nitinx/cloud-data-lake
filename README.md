@@ -26,7 +26,7 @@ This project contains two files:
 In a terminal or command window, navigate to the top-level project directory (that contains this README) and run following command:
 
 ```bash
-python3 etl.py
+spark-submit etl.py
 ```  
 
 ### Data
