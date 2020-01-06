@@ -14,6 +14,9 @@ config.read('dl.cfg')
 os.environ['AWS_ACCESS_KEY_ID']=config['AWS']['AWS_ACCESS_KEY_ID']
 os.environ['AWS_SECRET_ACCESS_KEY']=config['AWS']['AWS_SECRET_ACCESS_KEY']
 
+#sc._jsc.hadoopConfiguration().set("fs.s3a.access.key", config['AWS']['AWS_ACCESS_KEY_ID'])
+#sc._jsc.hadoopConfiguration().set("fs.s3a.secret.key", config['AWS']['AWS_SECRET_ACCESS_KEY'])
+
 
 def create_spark_session():
     '''Function to create a spark session'''
@@ -51,6 +54,7 @@ def process_log_data(spark, input_data, output_data):
     '''Function to process log data and generate parquet files for the fact and dimensions'''
     # get filepath to log data file
     data_log = input_data + "log-data/*/*/*.json"
+    #data_log = input_data + "log_data/*.json"
 
     # read log data file
     df_log = spark.read.json(data_log)
@@ -127,13 +131,13 @@ def process_log_data(spark, input_data, output_data):
 
 def main():
     spark = create_spark_session()
-    #input_data = "s3a://udacity-dend/"
-    input_data = "data/"
+    input_data = "s3a://udacity-dend/"
+    #input_data = "data/"
     
     output_data = "s3a://sparkify-dl/output/"
     #output_data = "etl/output/"
-
-    process_song_data(spark, input_data, output_data)    
+    
+    #process_song_data(spark, input_data, output_data)    
     process_log_data(spark, input_data, output_data)
 
     
